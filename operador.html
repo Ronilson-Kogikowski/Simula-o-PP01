@@ -239,14 +239,14 @@ main{max-width:880px;margin:0 auto;padding:32px 22px 36px}
     <span style="font-size:3.2rem">✅</span>
     <h2>Protocolo Concluído!</h2>
     <p>Todas as etapas foram verificadas. Boa operação!</p>
-    <button class="rbtn" onclick="reset()">↺ Reiniciar</button>
+    <p style="color:var(--blue);margin-top:10px;font-weight:600">Avançando automaticamente para a próxima etapa...</p>
   </div>
 </div>
 
 <script>
 const T=9;let done=new Set();
 function tog(id,n){const c=document.getElementById(id);if(done.has(id)){done.delete(id);c.classList.remove('done');document.getElementById('n'+n).innerText=n;}else{done.add(id);c.classList.add('done');document.getElementById('n'+n).innerText='✓';burst(c);}upd();}
-function upd(){const p=Math.round(done.size/T*100);document.getElementById('pFill').style.width=p+'%';document.getElementById('pLabel').innerText=done.size+' / '+T+' concluídas';document.getElementById('pPct').innerText=p+'%';if(done.size===T)setTimeout(()=>document.getElementById('modal').classList.add('show'),400);}
+function upd(){const p=Math.round(done.size/T*100);document.getElementById('pFill').style.width=p+'%';document.getElementById('pLabel').innerText=done.size+' / '+T+' concluídas';document.getElementById('pPct').innerText=p+'%';if(done.size===T){setTimeout(()=>document.getElementById('modal').classList.add('show'),400);setTimeout(()=>window.location.href='liquidacao.html',2000);}}
 function reset(){done.clear();document.querySelectorAll('.card').forEach(c=>c.classList.remove('done'));for(let i=1;i<=T;i++)document.getElementById('n'+i).innerText=i;document.getElementById('modal').classList.remove('show');upd();}
 function burst(card){const r=card.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;for(let i=0;i<8;i++){const d=document.createElement('div');d.style.cssText=`position:fixed;left:${cx}px;top:${cy}px;width:8px;height:8px;border-radius:50%;background:${['#10b981','#3b82f6','#06b6d4','#f59e0b'][i%4]};pointer-events:none;z-index:9999;transform:translate(-50%,-50%)`;document.body.appendChild(d);const a=i/8*Math.PI*2,dist=55+Math.random()*35;d.animate([{transform:`translate(-50%,-50%) scale(1)`,opacity:1},{transform:`translate(calc(-50% + ${Math.cos(a)*dist}px),calc(-50% + ${Math.sin(a)*dist}px)) scale(0)`,opacity:0}],{duration:480,easing:'ease-out'}).onfinish=()=>d.remove();}}
 upd();
